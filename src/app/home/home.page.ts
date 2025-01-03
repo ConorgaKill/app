@@ -1,12 +1,25 @@
-import { Component } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
+import { Component, OnInit } from '@angular/core';
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent],
+  templateUrl: './home.page.html',
+  styleUrls: ['./home.page.scss'],
 })
-export class HomePage {
-  constructor() {}
+export class HomePage implements OnInit {
+  selectedUnit: string = 'metric';  // Default to Metric
+
+  constructor(private storage: Storage) {}
+
+  ngOnInit() {
+    this.loadUnit();
+  }
+
+  // Load the selected unit from storage
+  async loadUnit() {
+    const storedUnit = await this.storage.get('unit');
+    if (storedUnit) {
+      this.selectedUnit = storedUnit;
+    }
+  }
 }
